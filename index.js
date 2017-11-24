@@ -3,8 +3,6 @@ const axios = require('axios');
 const dateFormat = require('dateformat');
 const PushBullet = require('pushbullet');
 
-var pusher = new PushBullet(fs.readFileSync('pushbullet-api-key', "utf8"));
-
 fs.readFile('config.json', 'utf8', (err, data) => {
     if (err) throw err;
     JSON.parse(data).forEach( entry => {
@@ -23,7 +21,11 @@ function sendDelays(from, to, time) {
         }
     }).then(response => {
         let delay = response.data.connections[0].from.delay;
-        if (delay)
-            pusher.note(pusher, from+' -> '+to+' Delay ', 'Delay is '+delay+' min', function(error, response) {console.log(arguments)});
+        if (delay){
+            fs.readFile('pushbullet-api-key', "utf8", (err, data) => {
+                let pusher = new PushBullet(data.trim());
+                pusher.note({}, from+' -> '+to+' Delay', 'Delay is '+delay+' min', function(error, response) {console.log(arguments)});
+            });
+        }
     });
 }
