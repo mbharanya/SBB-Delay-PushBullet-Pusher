@@ -1,6 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 const dateFormat = require('dateformat');
+const moment = require('moment')
 const PushBullet = require('pushbullet');
 
 const CONFIG_FILE_NAME = 'config.json';
@@ -17,6 +18,13 @@ fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
 });
 
 function sendDelays(from, to, time) {
+    let timeToCheck = moment(time, 'HH:mm');
+    let hoursDifference = timeToCheck.diff(moment.now(), 'hours');
+
+    if (hoursDifference > 1 || hoursDifference < -1) {
+        return;
+    }
+
     axios.get('http://transport.opendata.ch/v1/connections', {
         params: {
             from: from,
