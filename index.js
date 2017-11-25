@@ -3,11 +3,15 @@ const axios = require('axios');
 const dateFormat = require('dateformat');
 const PushBullet = require('pushbullet');
 
-var pusher = new PushBullet(fs.readFileSync('pushbullet-api-key', "utf8"));
+const CONFIG_FILE_NAME = 'config.json';
+const LAST_DELAYS_FILE_NAME = 'last-delays.json';
+const PUSHBULLET_API_KEY_FILE_NAME = 'pushbullet-api-key';
 
-fs.readFile('config.json', 'utf8', (err, data) => {
+const DEFAULT_ENCODING = 'utf8';
+
+fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
     if (err) throw err;
-    JSON.parse(data).forEach( entry => {
+    JSON.parse(data).forEach(entry => {
         sendDelays(entry.from, entry.to, entry.time)
     })
 });
@@ -23,7 +27,45 @@ function sendDelays(from, to, time) {
         }
     }).then(response => {
         let delay = response.data.connections[0].from.delay;
-        if (delay)
-            pusher.note(pusher, from+' -> '+to+' Delay ', 'Delay is '+delay+' min', function(error, response) {console.log(arguments)});
+        if (delay) {
+            fs.readFile(LAST_DELAYS_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
+                if (err) throw err;
+
+                let lastDelays = JSON.parse(data);
+                let hasNewDelay = lastDelays.some(connectionEntry => {
+                    return isSameConnection(connectionEntry, from, to, time) &&
+                        connectionEntry.lastDelay != delay;
+                });
+
+                if (hasNewDelay) {
+                    fs.readFile(PUSHBULLET_API_KEY_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
+                        if (err) throw err;
+                        let pusher = new PushBullet(data.trim());
+                        pushMessage(pusher, from, to, delay);
+
+                        lastDelays.forEach(connectionEntry => {
+                            if (isSameConnection(connectionEntry, from, to, time)) {
+                                connectionEntry.lastDelay = delay;
+                            }
+                        });
+                        fs.writeFile(LAST_DELAYS_FILE_NAME, JSON.stringify(lastDelays), DEFAULT_ENCODING, (err) => {
+                            if (err) throw err;
+                        });
+                    });
+                }
+            });
+        }
+    });
+}
+
+function isSameConnection(connectionEntry, from, to, time) {
+    return connectionEntry.from == from &&
+        connectionEntry.to == to &&
+        connectionEntry.time == time;
+}
+
+function pushMessage(pusher, from, to, delay) {
+    pusher.note({}, from + ' -> ' + to + ' Delay', 'Delay is ' + delay + ' min', function (error, response) {
+        if (error) throw error;
     });
 }
