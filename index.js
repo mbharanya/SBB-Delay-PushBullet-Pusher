@@ -28,7 +28,7 @@ function sendDelays(from, to, time) {
     }).then(response => {
         let delay = response.data.connections[0].from.delay;
         if (delay) {
-            fs.readFile(LAST_DELAYS_FILE_NAME, 'utf8', (err, data) => {
+            fs.readFile(LAST_DELAYS_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
                 if (err) throw err;
 
                 var lastDelays = JSON.parse(data);
