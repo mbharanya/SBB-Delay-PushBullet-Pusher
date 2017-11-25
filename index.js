@@ -31,7 +31,7 @@ function sendDelays(from, to, time) {
             fs.readFile(LAST_DELAYS_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
                 if (err) throw err;
 
-                var lastDelays = JSON.parse(data);
+                let lastDelays = JSON.parse(data);
                 let hasNewDelay = lastDelays.some(connectionEntry => {
                     return isSameConnection(connectionEntry, from, to, time) &&
                         connectionEntry.lastDelay != delay;
@@ -47,7 +47,7 @@ function sendDelays(from, to, time) {
                             if (isSameConnection(connectionEntry, from, to, time)) {
                                 connectionEntry.lastDelay = delay;
                             }
-                        })
+                        });
                         fs.writeFile(LAST_DELAYS_FILE_NAME, JSON.stringify(lastDelays), DEFAULT_ENCODING, (err) => {
                             if (err) throw err;
                         });
