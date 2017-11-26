@@ -9,6 +9,7 @@ const LAST_DELAYS_FILE_NAME = 'last-delays.json';
 const PUSHBULLET_API_KEY_FILE_NAME = 'pushbullet-api-key';
 
 const DEFAULT_ENCODING = 'utf8';
+const MINUTES_DELTA = 30;
 
 
 fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
@@ -25,9 +26,9 @@ fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
 
 function sendDelays(from, to, time) {
     let timeToCheck = moment(time, 'HH:mm');
-    let hoursDifference = timeToCheck.diff(moment.now(), 'hours');
+    let minutesDifference = timeToCheck.diff(moment.now(), 'minutes');
 
-    if (hoursDifference > 1 || hoursDifference < -1) {
+    if (minutesDifference > MINUTES_DELTA || minutesDifference < -MINUTES_DELTA) {
         return;
     }
 
