@@ -10,11 +10,17 @@ const PUSHBULLET_API_KEY_FILE_NAME = 'pushbullet-api-key';
 
 const DEFAULT_ENCODING = 'utf8';
 
+
 fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
     if (err) throw err;
     JSON.parse(data).forEach(entry => {
-        sendDelays(entry.from, entry.to, entry.time)
+        if (isConfiguredWeekday(entry))
+            sendDelays(entry.from, entry.to, entry.time)
     })
+
+    function isConfiguredWeekday(entry) {
+        return entry.weekdays.includes(dateFormat(new Date(), 'ddd').toLowerCase());
+    }
 });
 
 function sendDelays(from, to, time) {
