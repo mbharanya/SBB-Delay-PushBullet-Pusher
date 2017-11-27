@@ -29,5 +29,16 @@
       "wed",
       "fri"
     ]
+  },
+  {
+    "from": "Gerlafingen",
+    "to": "Olten",
+    "time": "08:04",
+    "weekdays": [
+      "mon",
+      "tue",
+      "thu"
+    ]
   }
+ 
 ]
