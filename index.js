@@ -56,7 +56,7 @@ function sendDelays(from, to, time) {
                     fs.readFile(PUSHBULLET_API_KEY_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
                         if (err) throw err;
                         let pusher = new PushBullet(data.trim());
-                        pushMessage(pusher, from, to, time, delay);
+                        pushMessage(pusher, from, to, time, delay, response.data.connections[0].from.prognosis.departure);
 
                         lastDelays.forEach(connectionEntry => {
                             if (isSameConnection(connectionEntry, from, to, time)) {
@@ -79,8 +79,8 @@ function isSameConnection(connectionEntry, from, to, time) {
         connectionEntry.time == time;
 }
 
-function pushMessage(pusher, from, to, time, delay) {
-    pusher.note({}, `${from} -> ${to} Delay at ${time}`, `Delay is ${delay} min`, function (error, response) {
+function pushMessage(pusher, from, to, time, delay, prognosisTime) {
+    pusher.note({}, `${from} -> ${to} Delay at ${time}`, `Delay is ${delay} min\nPrognosis: ${prognosisTime}`, function (error, response) {
         if (error) throw error;
     });
 }
