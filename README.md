@@ -1,4 +1,5 @@
 # SBB-Delay-PushBullet-Pusher
+This is a simple script to send you a Pushbullet push if a train connection is expected to be late
 
 ## How to use:
 1. Change `config.json` to your stations and departure times
