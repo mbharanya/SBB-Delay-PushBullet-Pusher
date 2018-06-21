@@ -1,8 +1,8 @@
 [
   {
-    "from": "Zürich",
-    "to": "Gerlafingen",
-    "time": "18:30",
+    "from": "Dübendorf",
+    "to": "Zürich Höschgasse",
+    "time": "09:21",
     "weekdays": [
       "mon",
       "tue",
@@ -12,32 +12,15 @@
     ]
   },
   {
-    "from": "Gerlafingen",
-    "to": "Zürich",
-    "time": "07:34",
+    "from": "Zürich Höschgasse",
+    "to": "Dübendorf",
+    "time": "18:50",
     "weekdays": [
       "mon",
       "tue",
-      "thu"
-    ]
-  },
-  {
-    "from": "Solothurn",
-    "to": "Zürich",
-    "time": "08:01",
-    "weekdays": [
       "wed",
+      "thu",
       "fri"
-    ]
-  },
-  {
-    "from": "Gerlafingen",
-    "to": "Zürich",
-    "time": "08:04",
-    "weekdays": [
-      "mon",
-      "tue",
-      "thu"
     ]
   }
  
