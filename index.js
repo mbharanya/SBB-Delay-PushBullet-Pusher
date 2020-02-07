@@ -14,6 +14,12 @@ const MINUTES_DELTA = 30;
 
 fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
     if (err) throw err;
+
+    const configData = JSON.parse(data)
+    if (!fs.existsSync(LAST_DELAYS_FILE_NAME)) {
+        createInitialDelayCacheFile(configData)
+    }
+
     JSON.parse(data).forEach(entry => {
         if (isConfiguredWeekday(entry))
             sendDelays(entry.from, entry.to, entry.time)
@@ -92,12 +98,24 @@ function pushMessage(pusher, connection, prognosis) {
     pusher.note(
         {},
         `${connection.from} -> ${connection.to} Delay at ${connection.time}`,
-        `Delay is ${prognosis.delay} min\n`+
-        `Prognosis: ${prognosis.time}\n`+
-        `Platform: ${prognosis.platform}\n`+
+        `Delay is ${prognosis.delay} min\n` +
+        `Prognosis: ${prognosis.time}\n` +
+        `Platform: ${prognosis.platform}\n` +
         `Arrival: ${prognosis.arrival}\n`
         ,
         function (error, response) {
             if (error) throw error;
         });
+}
+
+function createInitialDelayCacheFile(configData) {
+    const delayFormat = configData.map(c => {
+        return {
+            from: c.from,
+            to: c.to,
+            time: c.time,
+            lastDelay: null
+        }
+    })
+    fs.writeFileSync(LAST_DELAYS_FILE_NAME, JSON.stringify(delayFormat))
 }

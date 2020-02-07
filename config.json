@@ -1,8 +1,8 @@
 [
   {
     "from": "Dübendorf",
-    "to": "Zürich Höschgasse",
-    "time": "09:21",
+    "to": "Zürich Rentenanstalt",
+    "time": "09:20",
     "weekdays": [
       "mon",
       "tue",
@@ -12,9 +12,45 @@
     ]
   },
   {
-    "from": "Zürich Höschgasse",
+    "from": "Dübendorf",
+    "to": "Zürich Rentenanstalt",
+    "time": "08:50",
+    "weekdays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ]
+  },
+  {
+    "from": "Dübendorf",
+    "to": "Zürich Enge",
+    "time": "08:35",
+    "weekdays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ]
+  },
+  {
+    "from": "Zürich Rentenanstalt",
     "to": "Dübendorf",
-    "time": "18:50",
+    "time": "18:18",
+    "weekdays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ]
+  },
+  {
+    "from": "Zürich Rentenanstalt",
+    "to": "Dübendorf",
+    "time": "18:48",
     "weekdays": [
       "mon",
       "tue",
