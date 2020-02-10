@@ -11,6 +11,18 @@
       "fri"
     ]
   },
+{
+    "from": "Dübendorf",
+    "to": "Zürich Enge",
+    "time": "09:05",
+    "weekdays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ]
+  },
   {
     "from": "Dübendorf",
     "to": "Zürich Rentenanstalt",
