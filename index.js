@@ -6,7 +6,6 @@ const PushBullet = require('pushbullet');
 
 const CONFIG_FILE_NAME = 'config.json';
 const LAST_DELAYS_FILE_NAME = 'last-delays.json';
-const PUSHBULLET_API_KEY_FILE_NAME = 'pushbullet-api-key';
 
 const DEFAULT_ENCODING = 'utf8';
 const MINUTES_DELTA = 30;
@@ -60,28 +59,26 @@ function sendDelays(from, to, time) {
                 });
 
                 if (hasNewDelay) {
-                    fs.readFile(PUSHBULLET_API_KEY_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
-                        if (err) throw err;
-                        let pusher = new PushBullet(data.trim());
-                        pushMessage(pusher, {
-                            from: from,
-                            to: to,
-                            time: time,
-                        }, {
-                            delay: delay,
-                            time: response.data.connections[0].from.prognosis.departure,
-                            platform: response.data.connections[0].from.prognosis.platform,
-                            arrival: response.data.connections[0].from.prognosis.arrival
-                        });
+                    if (err) throw err;
+                    let pusher = new PushBullet(process.env.PUSHBULLET_API_KEY);
+                    pushMessage(pusher, {
+                        from: from,
+                        to: to,
+                        time: time,
+                    }, {
+                        delay: delay,
+                        time: response.data.connections[0].from.prognosis.departure,
+                        platform: response.data.connections[0].from.prognosis.platform,
+                        arrival: response.data.connections[0].from.prognosis.arrival
+                    });
 
-                        lastDelays.forEach(connectionEntry => {
-                            if (isSameConnection(connectionEntry, from, to, time)) {
-                                connectionEntry.lastDelay = delay;
-                            }
-                        });
-                        fs.writeFile(LAST_DELAYS_FILE_NAME, JSON.stringify(lastDelays), DEFAULT_ENCODING, (err) => {
-                            if (err) throw err;
-                        });
+                    lastDelays.forEach(connectionEntry => {
+                        if (isSameConnection(connectionEntry, from, to, time)) {
+                            connectionEntry.lastDelay = delay;
+                        }
+                    });
+                    fs.writeFile(LAST_DELAYS_FILE_NAME, JSON.stringify(lastDelays), DEFAULT_ENCODING, (err) => {
+                        if (err) throw err;
                     });
                 }
             });

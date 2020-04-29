@@ -3,7 +3,7 @@ This is a simple script to send you a Pushbullet push if a train connection is e
 
 ## How to use:
 1. Change `config.json` to your stations and departure times
-2. Create `pushbullet-api-key` with your Pushbullet API Key
+2. `export PUSHBULLET_API_KEY=<yourkeyhere>`
 4. `npm install`
 5. `node index.js`
 6. Add it to a crontab
