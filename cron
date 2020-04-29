@@ -1,0 +1,2 @@
+*/1 * * * * cd /project && /usr/bin/node index.js
+
