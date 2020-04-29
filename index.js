@@ -11,6 +11,7 @@ const PUSHBULLET_API_KEY_FILE_NAME = 'pushbullet-api-key';
 const DEFAULT_ENCODING = 'utf8';
 const MINUTES_DELTA = 30;
 
+console.log("Calling API...")
 
 fs.readFile(CONFIG_FILE_NAME, DEFAULT_ENCODING, (err, data) => {
     if (err) throw err;
