@@ -1,2 +1,2 @@
-*/1 * * * * cd /project && /usr/bin/node index.js
+*/1 * * * * cd /project && /usr/local/bin/node index.js > /proc/1/fd/1 2>/proc/1/fd/2
 
